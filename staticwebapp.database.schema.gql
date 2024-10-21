@@ -1,0 +1,46 @@
+# GraphQL schema for an eCommerce site
+
+# Represents a product in the catalog
+type Product {
+    id: ID!
+    name: String!
+    description: String!
+    price: Float!
+    category: String!
+    stock: Int!
+    imageUrl: String
+}
+
+# Represents a user in the system
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    password: String! # In production, this should be securely managed
+    cart: Cart
+    orders: [Order]
+}
+
+# Represents the shopping cart of a user
+type Cart {
+    id: ID!
+    userId: ID!
+    items: [CartItem!]!
+    totalPrice: Float!
+}
+
+# Represents an individual item in the shopping cart
+type CartItem {
+    product: Product!
+    quantity: Int!
+}
+
+# Represents an order made by a user
+type Order {
+    id: ID!
+    userId: ID!
+    items: [OrderItem!]!
+    totalAmount: Float!
+    payment: Payment!
+    status: OrderStatus!
+    placedAt
