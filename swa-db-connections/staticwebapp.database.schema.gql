@@ -1,46 +1,80 @@
-# GraphQL schema for an eCommerce site
-
-# Represents a product in the catalog
-type Product {
-    id: ID!
-    name: String!
-    description: String!
-    price: Float!
-    category: String!
-    stock: Int!
-    imageUrl: String
+type Character {
+    id : ID,
+    name : String,
+    type: String,
+    homePlanet: Int,
+    primaryFunction: String,
+    star: Star
 }
 
-# Represents a user in the system
-type User {
-    id: ID!
-    name: String!
-    email: String!
-    password: String! # In production, this should be securely managed
-    cart: Cart
-    orders: [Order]
+type Planet @model(name:"PlanetAlias") {
+    id : ID!,
+    name : String,
+    character: Character,
+    age : Int,
+    dimension : String,
+    earth: Earth,
+    tags: [String!],
+    stars: [Star],
+    additionalAttributes: [AdditionalAttribute],
+    moons: [Moon],
+    suns: [Sun]
 }
 
-# Represents the shopping cart of a user
-type Cart {
-    id: ID!
-    userId: ID!
-    items: [CartItem!]!
-    totalPrice: Float!
+type Star {
+    id : ID,
+    name : String,
+    tag: Tag
 }
 
-# Represents an individual item in the shopping cart
-type CartItem {
-    product: Product!
-    quantity: Int!
+type Tag {
+    id : ID,
+    name : String
 }
 
-# Represents an order made by a user
-type Order {
-    id: ID!
-    userId: ID!
-    items: [OrderItem!]!
-    totalAmount: Float!
-    payment: Payment!
-    status: OrderStatus!
-    placedAt
+type Moon {
+    id : ID,
+    name : String,
+    details : String,
+    moonAdditionalAttributes: [MoonAdditionalAttribute]
+}
+
+type Earth {
+    id : ID,
+    name : String,
+    type: String @authorize(roles: ["authenticated"])
+}
+
+type Sun {
+    id : ID,
+    name : String
+}
+
+type AdditionalAttribute {
+    id : ID,
+    name : String,
+    type: String
+}
+
+type MoonAdditionalAttribute {
+    id : ID,
+    name : String,
+    moreAttributes: [MoreAttribute!]
+}
+
+type MoreAttribute {
+    id : ID,
+    name : String,
+    type: String @authorize(roles: ["authenticated"])
+}
+
+type InvalidAuthModel @model @authorize(policy: "Crater") {
+    id : ID!,
+    name : String
+}
+
+type PlanetAgain @model {
+    id : ID,
+    name : String,
+    type: String @authorize(roles: ["authenticated"])
+}
